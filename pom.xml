@@ -1,47 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright (c) 2010 RedEngine Ltd, http://www.redengine.co.nz. All rights reserved. -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-	<parent>
-		<groupId>net.stickycode.parent</groupId>
-		<artifactId>sticky-parent-jar8</artifactId>
-		<version>1.3</version>
-	</parent>
-	<modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-	<groupId>net.stickycode.parent</groupId>
-	<artifactId>sticky-parent-api8</artifactId>
-	<version>1.4-SNAPSHOT</version>
-	<packaging>pom</packaging>
+  <groupId>net.stickycode.parent</groupId>
+  <artifactId>sticky-parent-api8</artifactId>
+  <version>2.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
 
-	<name>sticky-parent-api8-1</name>
-	<description>The definition of StickyCode api projects</description>
-	<inceptionYear>2010</inceptionYear>
-	<url>http://www.StickyCode.net/parent/sticky-api/</url>
+  <name>${project.artifactId}-1</name>
+  <description>The definition of StickyCode api projects</description>
+  <inceptionYear>2010</inceptionYear>
+  <url>http://www.StickyCode.net/parent/sticky-api/</url>
 
-	<scm>
-		<connection>scm:svn:http://stickycode.googlecode.com/svn/trunk/net.stickycode.parent/sticky-api</connection>
-		<developerConnection>scm:svn:https://stickycode.googlecode.com/svn/trunk/net.stickycode.parent/sticky-api</developerConnection>
-		<url>http://code.google.com/p/stickycode/source/browse/#svn/trunk/net.stickycode.parent/sticky-api</url>
-	</scm>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>clirr-maven-plugin</artifactId>
-				<version>2.6.1</version>
-				<executions>
-					<execution>
-						<id>api-check</id>
-						<phase>test</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
+  <scm>
+    <developerConnection>${git.url}</developerConnection>
+    <tag>HEAD</tag>
+  </scm>
 
-	</build>
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <target.dir>target</target.dir>
+    <output.basedir>${basedir}</output.basedir>
+  </properties>
+
+  <build>
+    <directory>${output.basedir}/${target.dir}</directory>
+    <outputDirectory>${output.basedir}/${target.dir}/classes</outputDirectory>
+    <testOutputDirectory>${output.basedir}/${target.dir}/test-classes</testOutputDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>io.repaint.maven</groupId>
+        <artifactId>tiles-maven-plugin</artifactId>
+        <version>2.10</version>
+        <extensions>true</extensions>
+        <configuration>
+          <tiles>
+            <tile>net.stickycode.tile:sticky-tile-upload-nexus:[1,2)</tile>
+            <tile>net.stickycode.tile:sticky-tile-release:[1,2)</tile>
+          </tiles>
+        </configuration>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>in-children-only</id>
+      <activation>
+        <file>
+          <exists>src</exists>
+        </file>
+      </activation>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.repaint.maven</groupId>
+            <artifactId>tiles-maven-plugin</artifactId>
+            <version>2.10</version>
+            <extensions>true</extensions>
+            <configuration>
+              <tiles>
+                <tile>net.stickycode.tile:sticky-tile-upload-nexus:[1,2)</tile>
+                <tile>net.stickycode.tile:sticky-tile-parent-api:[1,2)</tile>
+              </tiles>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>running-in-eclipse</id>
+      <activation>
+        <property>
+          <name>m2e.version</name>
+        </property>
+      </activation>
+      <properties>
+        <target.dir>target-eclipse</target.dir>
+      </properties>
+    </profile>
+  </profiles>
 </project>
