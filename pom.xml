@@ -68,7 +68,7 @@
             <configuration>
               <tiles>
                 <tile>net.stickycode.tile:sticky-tile-upload-nexus:[1,2)</tile>
-                <tile>net.stickycode.tile:sticky-tile-parent-api:[1,2)</tile>
+                <tile>net.stickycode.tile:sticky-tile-parent-api:[2,3)</tile>
               </tiles>
             </configuration>
           </plugin>
